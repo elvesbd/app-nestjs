@@ -1,10 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   OnModuleInit,
   Param,
+  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
@@ -53,5 +56,30 @@ export class UsersController implements OnModuleInit {
   @ApiBody({ type: UserDto })
   createUser(@Body() user: UserDto) {
     return this.client.emit('create-user', user);
+  }
+
+  @Put(':id')
+  @ApiBody({ type: UserDto })
+  updateUser(@Param('id') id: number, @Body() user: UserDto) {
+    const payload = {
+      id,
+      ...user,
+    };
+    return this.client.emit('update-user', payload);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id: number) {
+    return this.client.emit('delete-user', { id });
+  }
+
+  @Patch(':id/active')
+  activeUser(@Param('id') id: number) {
+    return this.client.emit('active-user', { id });
+  }
+
+  @Patch(':id/inactive')
+  inactiveUser(@Param('id') id: number) {
+    return this.client.emit('inactive-user', { id });
   }
 }
