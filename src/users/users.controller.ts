@@ -34,7 +34,7 @@ export class UsersController implements OnModuleInit {
   private client: ClientKafka;
 
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user'];
+    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
 
     requestPatters.forEach(async (pattern) => {
       this.client.subscribeToResponseOf(pattern);
@@ -44,7 +44,7 @@ export class UsersController implements OnModuleInit {
 
   @Get()
   findUsers(): Observable<User[]> {
-    return this.client.send('find-all-user', {});
+    return this.client.emit('find-all-user', {});
   }
 
   @Get(':id')
@@ -54,8 +54,8 @@ export class UsersController implements OnModuleInit {
 
   @Post()
   @ApiBody({ type: UserDto })
-  createUser(@Body() user: UserDto) {
-    return this.client.emit('create-user', user);
+  createUser(@Body() user: UserDto): Observable<User> {
+    return this.client.send('create-user', user);
   }
 
   @Put(':id')
