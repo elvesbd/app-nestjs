@@ -33,8 +33,8 @@ export class NotificationController implements OnModuleInit {
     return this.client.emit('notification-email', data);
   }
 
-  @Post('phone')
+  @Post('whatsapp')
   sendPhone(@Body() data: PhoneDto) {
-    return this.client.emit('notification-phone', data);
+    return this.client.emit('notification-whatsapp', data);
   }
 }

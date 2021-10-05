@@ -44,7 +44,7 @@ export class UsersController implements OnModuleInit {
 
   @Get()
   findUsers(): Observable<User[]> {
-    return this.client.send('find-all-user', {});
+    return this.client.emit('find-all-user', {});
   }
 
   @Get(':id')
