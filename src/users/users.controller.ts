@@ -60,7 +60,7 @@ export class UsersController implements OnModuleInit {
 
   @Put(':id')
   @ApiBody({ type: UserDto })
-  updateUser(@Param('id') id: number, @Body() user: UserDto) {
+  updateUser(@Param('id') id: number, @Body() user: UserDto): Observable<User> {
     const payload = {
       id,
       ...user,
